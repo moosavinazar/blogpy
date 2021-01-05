@@ -12,6 +12,7 @@ def validate_file_extension(value):
     if not ext.lower() in valid_extensions:
         raise ValidationError('Unsupported file extension')
 
+
 class UserProfiles(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.FileField(upload_to='files/user_avatar', null=True, blank=True,
@@ -19,7 +20,7 @@ class UserProfiles(models.Model):
     description = models.CharField(max_length=512, null=False, blank=False)
 
     def __str__(self):
-        self.user.first_name + ' ' + self.user.last_name
+        return self.user.first_name + ' ' + self.user.last_name
 
 
 class Article(models.Model):
@@ -31,7 +32,7 @@ class Article(models.Model):
     author = models.OneToOneField(UserProfiles, on_delete=models.CASCADE)
 
     def __str__(self):
-        self.title
+        return self.title
 
 
 class Category(models.Model):

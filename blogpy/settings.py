@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'ckeditor',
+    'ckeditor_uploader',
+    'rest_framework',
 
     'blog',
 ]
@@ -126,9 +128,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/blogpy/static/'
+STATIC_URL = '/home/sarsoft/Projects/Python/static/'
+STATIC_ROOT = '/home/sarsoft/Projects/Python/static/'
 
-CKEDITOR_BASEPATH = '/var/www/blogpy/static/ckeditor/ckeditor/'
+CKEDITOR_BASEPATH = '/home/sarsoft/Projects/Python/static/ckeditor/ckeditor/'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
