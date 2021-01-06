@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Django default" uuid="f7a25141-9247-42cf-8c4b-6df16c3e9b0d">
+    <data-source source="LOCAL" name="Django default" uuid="41c13913-03a6-4246-a507-787d0eeeb4aa">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
