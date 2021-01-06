@@ -3,7 +3,19 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from blog.models import *
 from . import serializers
+from rest_framework import viewsets, permissions
 
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = serializers.SingleArticleSerializer
+    http_method_names = ['get', 'post']
+
+    def get_serializer_class(self):
+        if self.request.method not in permissions.SAFE_METHODS:
+            return serializers.SingleArticleSerializer
+        else:
+            return serializers.ArticleSerializer
 
 @api_view()
 def get_all_articles(self):
@@ -57,25 +69,35 @@ def submit_article(request):
     serializer = serializers.SubmitArticleSerializer(data=request.data)
     try:
         if serializer.is_valid():
-            title = serializer.data.get('title')
-            cover = request.FILES['cover']
-            content = serializer.data.get('content')
-            category_id = serializer.data.get('category_id')
-            author_id = serializer.data.get('author_id')
+            serializer.save()
+            return Response({'data': serializer.data}, status=status.HTTP_201_CREATED)
         else:
-            return Response({'status': 'Bad Request'}, status=status.HTTP_400_BAD_REQUEST)
-
-        user = User.objects.get(id=author_id)
-        author = UserProfiles.objects.get(user=user)
-        category = Category.objects.get(id=category_id)
-
-        article = Article()
-        article.title = title
-        article.cover = cover
-        article.content = content
-        article.category = category
-        article.author = author
-        article.save()
-        return Response({'data': serializers.SingleArticleSerializer(article).data}, status=status.HTTP_201_CREATED)
+            return Response({'status': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response({'status': 'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['PUT'])
+def update_article(request, pk):
+    try:
+        article = Article.objects.get(pk=pk)
+    except:
+        return Response({'error': 'Not Found!'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = serializers.SubmitArticleSerializer(article, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_article(request, pk):
+    try:
+        article = Article.objects.get(pk=pk)
+    except:
+        return Response({'error': 'Not Found!'}, status=status.HTTP_404_NOT_FOUND)
+
+    article.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
