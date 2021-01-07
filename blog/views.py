@@ -17,6 +17,38 @@ class ArticleViewSet(viewsets.ModelViewSet):
         else:
             return serializers.ArticleSerializer
 
+    search_fields = ('name',)
+    ordering_fields = '__all__'
+
+    def list(self, request, *args, **kwargs):
+        article = super().list(request, *args, **kwargs)
+        print("----------- LIST -----------")
+        return article
+
+    def create(self, request, *args, **kwargs):
+        article = super().create(request, *args, **kwargs)
+        print("----------- CREATE -----------")
+        return article
+
+    def update(self, request, *args, **kwargs):
+        article = super().update(request, *args, **kwargs)
+        instance = self.get_object()
+        print("----------- UPDATE ----------- {}".format(instance.title))
+        return article
+
+    def retrieve(self, request, *args, **kwargs):
+        article = super().retrieve(request, *args, **kwargs)
+        instance = self.get_object()
+        print("----------- RETRIEVE ----------- {}".format(instance.title))
+        return article
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        print("----------- DESTROY ----------- {}".format(instance.title))
+        article = super().destroy(request, *args, **kwargs)
+        return article
+
+
 @api_view()
 def get_all_articles(self):
     try:
